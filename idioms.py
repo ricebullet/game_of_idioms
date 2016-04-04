@@ -20,11 +20,11 @@ def build_data(idioms_file):
 
 def game_type():
     while True:
-        choice = input('Simple or advanced version? ').lower()
-        if choice == 'simple':
+        choice = input('Easy or hard version? ').lower()
+        if choice == 'easy':
             idioms_file = 'idioms.txt'
             return idioms_file
-        elif choice == 'advanced':
+        elif choice == 'hard':
             idioms_file = 'full_idioms.txt'
             return idioms_file
         else:
@@ -87,6 +87,7 @@ def start():
             attempts = int(input('\nHow many questions would you like? '))
         except Exception:
             print ('That is not a valid number.')
+            continue
         break
     print ('\nYou have 3 tries to guess the word in the blank for these',
            'common expressions. \nGood luck!')
