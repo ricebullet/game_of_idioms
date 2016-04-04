@@ -6,21 +6,35 @@ import time
 # guess. If the guess matches the censored word, then one point is added to the
 # score.
 
-idioms_file = 'idioms.txt'
-idioms = open(idioms_file).read().splitlines()
-data = []
-for line in idioms:
-    for word in line.split():
-    # If there's more than two words and the length of a word is > 3
-        if len(line.split()) > 2 and len(word) > 3 and line not in data:
-            data.append(line)
-data = sorted(data)
-idioms = data
+def build_data(idioms_file):
+    idioms = open(idioms_file).read().splitlines()
+    data = []
+    for line in idioms:
+        for word in line.split():
+        # If there's more than two words and the length of a word is > 3
+            if len(line.split()) > 2 and len(word) > 3 and line not in data:
+                data.append(line)
+    data = sorted(data)
+    idioms = data
+    return idioms
 
-def restart():
+def game_type():
+    while True:
+        choice = input('Simple or advanced version? ').lower()
+        if choice == 'simple':
+            idioms_file = 'idioms.txt'
+            return idioms_file
+        elif choice == 'advanced':
+            idioms_file = 'full_idioms.txt'
+            return idioms_file
+        else:
+            print('I don\'t know what that means.')
+
+
+def restart(attempts, idioms):
     choice = input('\nPlay again: Y or N? ').lower()
     if choice[0] == 'y':
-        game()
+        game(attempts, idioms)
     elif choice[0] == 'n':
         os._exit(1)
     else:
@@ -40,22 +54,15 @@ def joiner(sentence):
     result = ' '.join(words)
     return (result, answer.lower())
 
-def game():
-    while True:
-        try:
-            attempts = int(input('\nHow many questions would you like? '))
-        except:
-            print ('That is not a valid number.')
-        else:
-            break
-    count = 0
+def game(attempts, idioms):
+
+
     wins = 0
-    while count < attempts:
+    for i in range(attempts):
         sentence = random.choice(idioms)
         idioms.remove(sentence)
         result, answer = joiner(sentence)
         print ('\n' + result )
-        count += 1
         turns = 0
         while turns < 3:
             guess = input('\n> ').lower()
@@ -70,12 +77,20 @@ def game():
                     print ('\nThe answer was', answer)
     print ('Your score: %i/%i' % (wins, attempts))
 
-    restart()
+    restart(attempts, idioms)
 
 def start():
+    choice = game_type()
+    idioms = build_data(choice)
+    while True:
+        try:
+            attempts = int(input('\nHow many questions would you like? '))
+        except Exception:
+            print ('That is not a valid number.')
+        break
     print ('\nYou have 3 tries to guess the word in the blank for these',
            'common expressions. \nGood luck!')
     time.sleep(2)
-    game()
+    game(attempts, idioms)
 
 start()
