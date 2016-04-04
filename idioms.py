@@ -32,14 +32,15 @@ def game_type():
 
 
 def restart(attempts, idioms):
-    choice = input('\nPlay again: Y or N? ').lower()
-    if choice[0] == 'y':
-        game(attempts, idioms)
-    elif choice[0] == 'n':
-        os._exit(1)
-    else:
-        print ("I don't know what that means.")
-        restart()
+    while True:
+        choice = input('\nPlay again: Y or N? ').lower()
+        if choice[0] == 'y':
+            game(attempts, idioms)
+        elif choice[0] == 'n':
+            os._exit(1)
+        else:
+            print ("I don't know what that means.")
+            
 
 def censor(word):
     return '_' * len(word)
@@ -55,8 +56,6 @@ def joiner(sentence):
     return (result, answer.lower())
 
 def game(attempts, idioms):
-
-
     wins = 0
     for i in range(attempts):
         sentence = random.choice(idioms)
